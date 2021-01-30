@@ -20,29 +20,34 @@
 /* Bus controls */
 #if 1
 #include <avr/io.h>             /* Hardware specific include file */
-#define IF_BUS 8                /* Bus width (4 or 8) */
+#define IF_BUS 4                /* Bus width (4 or 8) */
 #define DELAY_US(n) delay_us(n) /* Delay d microseconds */
-#define IF_INIT()               /* Initialize control port */
-#define IF_DLY60()              /* Delay >=60ns (can be blanked for most uC) */
+#define IF_INIT()      \
+    {                  \
+        PORTB &= 0x03; \
+        DDRB |= 0xFC;  \
+    }              /* Initialize control port */
+#define IF_DLY60() /* Delay >=60ns (can be blanked for most uC) */
 #define IF_DLY450() \
-    {}                          /* Delay >=450ns@3V, >=250ns@5V */
-#define E1_HIGH() PORTB |= 0x80 /* Set E/E1 high */
-#define E1_LOW() PORTB &= 0x7F  /* Set E/E1 low */
+    {               \
+        PINB;       \
+        PINB;       \
+    }                           /* Delay >=450ns@3V, >=250ns@5V */
+#define E1_HIGH() PORTB |= 0x08 /* Set E/E1 high */
+#define E1_LOW() PORTB &= 0xF7  /* Set E/E1 low */
 #define E2_HIGH() PORTB |= 0x01 /* Set E2 high (dual controller only) */
 #define E2_LOW() PORTB &= 0xFE  /* Set E2 low (dual controller only) */
-#define RS_HIGH() PORTB |= 0x40 /* Set RS high */
-#define RS_LOW() PORTB &= 0xBF  /* Set RS low */
-#define OUT_DATA(d) \
-    PORTD =         \
-        d /* Output a byte d on the bus (higher 4 bits of d in 4-bit mode) */
+#define RS_HIGH() PORTB |= 0x04 /* Set RS high */
+#define RS_LOW() PORTB &= 0xFB  /* Set RS low */
+#define OUT_DATA(d)                                                           \
+    PORTB = (PORTB & 0x0F) | (d & 0xF0) /* Output a byte d on the bus (higher \
+                                           4 bits of d in 4-bit mode) */
 
 static void delay_us(unsigned int n) /* An example of delay n microsecond
-                                        routine (for Atmel AVR/8MHz) */
+                                        routine (for Atmel AVR/1MHz) */
 {
+    n /= 2;
     do { /* 8 clocks per loop (Atmel AVR) */
-        PINB;
-        PINB;
-        PINB;
         PINB;
     } while (--n);
 }
@@ -70,9 +75,10 @@ static void delay_us(unsigned int n) /* An example of delay n microsecond
 
 /* Characteristics of LCD module  */
 #define LCD_ETIME_1 1530 /* Execution time of Clear Display command [us] */
-#define LCD_ETIME_2 43 /* Execution time of other command and data write [us] \
-                        */
-#define LCD_DLF 2.0    /* Delay factor (>=2.0) */
+#define LCD_ETIME_2                                                        \
+    43              /* Execution time of other command and data write [us] \
+                     */
+#define LCD_DLF 2.0 /* Delay factor (>=2.0) */
 
 /*-------------------------------------------------------------------------*/
 

@@ -10,13 +10,14 @@
 /*--------------------------------------------------*/
 
 #define _LCD_ROWS 2  /* Number of Rows (1,2 or 4) */
-#define _LCD_COLS 40 /* Number of Columns (8..40) */
+#define _LCD_COLS 16 /* Number of Columns (8..40) */
 
 #define _USE_CURSOR 0 /* 1:Enable lcd_cursor function */
 #define _USE_CGRAM 0  /* 1:Enable lcd_setcg function */
 
-#define _USE_FUEL 0 /* 1:Enable lcd_put_fuel function (_USE_CGRAM must be 1) \
-                     */
+#define _USE_FUEL                                              \
+    0 /* 1:Enable lcd_put_fuel function (_USE_CGRAM must be 1) \
+       */
 
 #define _USE_BAR 0   /* 1:Enable lcd_put_bar function (_USE_CGRAM must be 1) */
 #define _MAX_BAR 255 /* Maximum value for lcd_put_bar function */
