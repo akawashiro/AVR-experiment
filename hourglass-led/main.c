@@ -99,7 +99,8 @@ int main(void) {
     turn_off_all();
     char y = 0, x = 0;
     while (1) {
-        for (uint8_t i = 0; i < 32; i++) {
+        // for (uint16_t i = 0; i < 1496; i++) { // 3600 sec
+        for (uint8_t i = 0; i < 32; i++) {  // 77 sec
             draw(matrix_data);
         }
         if (is_full(matrix_data)) {
