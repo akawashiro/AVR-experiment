@@ -91,7 +91,7 @@ int main(void) {
     // Anodes are used as Y-axis.
     DDRB = 0xff;
 
-    // Casodes of LEDs are connected DDRB[0:6] and DDRA[0:0].
+    // Casodes of LEDs are connected DDRD[0:6] and DDRA[0:0].
     // Casodes are used as X-Axis.
     DDRA = 0x03;
     DDRD = 0x7f;
